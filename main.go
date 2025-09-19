@@ -12,6 +12,7 @@ import (
 func main() {
 	message := flag.String("message", "/etc/ssh-maint/message", "Path to file with the message to write")
 	hostLoc := flag.String("host-key", "/etc/ssh-maint/host-key", "Path to the host key")
+	listenAddr := flag.String("listen", ":2222", "Address to listen to")
 	flag.Parse()
 
 	f, err := os.ReadFile(*message)
@@ -24,5 +25,5 @@ func main() {
 		_, _ = s.Write(f)
 	})
 
-	log.Fatal(ssh.ListenAndServe(":2222", nil, ssh.HostKeyFile(*hostLoc)))
+	log.Fatal(ssh.ListenAndServe(*listenAddr, nil, ssh.HostKeyFile(*hostLoc)))
 }
